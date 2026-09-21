@@ -1,0 +1,3 @@
+import type {NextApiRequest,NextApiResponse} from 'next';
+import crypto from 'crypto';
+export default function handler(req:NextApiRequest,res:NextApiResponse){const cookie=String(req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('luma_admin='))?.split('=')[1]||'';const[ email,sig ]=cookie.split('.');const allowed=String(process.env.LUMA_ADMIN_EMAIL||'').trim().toLowerCase(),secret=String(process.env.LUMA_ADMIN_PASSWORD||'');if(!email||!sig||!allowed||!secret||email!==allowed)return res.status(401).json({authenticated:false});const expected=crypto.createHmac('sha256',secret).update(email).digest('hex');res.status(crypto.timingSafeEqual(Buffer.from(sig),Buffer.from(expected))?200:401).json({authenticated:sig===expected,email});}
