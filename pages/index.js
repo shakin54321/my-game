@@ -1,1 +1,0 @@
-export default function Home(){return <main style={{position:"fixed",inset:0,overflow:"hidden",background:"#07101e"}}><iframe title="Neon Rush 3D" src="/neon.html" style={{position:"absolute",inset:0,width:"100%",height:"100%",border:0}} /></main>}
